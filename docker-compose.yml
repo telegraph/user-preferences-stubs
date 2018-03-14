@@ -3,5 +3,7 @@ version: '2'
 services:
   mock:
     image: "rodolpheche/wiremock:2.6.0-alpine"
+    volumes:
+      - "./stubs:/home/wiremock"
     ports:
       - "10000:8081"

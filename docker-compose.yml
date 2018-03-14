@@ -6,4 +6,4 @@ services:
     volumes:
       - "./stubs:/home/wiremock"
     ports:
-      - "10000:8081"
+      - "10000:8080"

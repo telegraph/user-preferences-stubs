@@ -1,11 +1,21 @@
 {
     "request": {
       "method": "GET",
-      "url": "/articles"
+      "urlPattern": "/mytelegraph/v0.3.0/user/([0-z]{24})/preferences"
     },
     "response": {
       "status": 200,
-      "bodyFileName": "articles.json",
+      "bodyFileName": "preferences.json",
       "transformers": ["body-transformer"]
     }
   }
+//   /mytelegraph/v0.3.0/user/:tmgId/preferences                            
+//   /mytelegraph/v0.3.0/user/:tmgId/preferences/follow/authors             
+//   /mytelegraph/v0.3.0/user/:tmgId/preferences/follow/authors/:authorId   
+//   /mytelegraph/v0.3.0/user/:tmgId/preferences/follow/authors/:authorId   
+//   /mytelegraph/v0.3.0/user/:tmgId/preferences/follow/topics              
+//   /mytelegraph/v0.3.0/user/:tmgId/preferences/follow/topics/:topic       
+//   /mytelegraph/v0.3.0/user/:tmgId/preferences/follow/topics/:topic       
+//   /mytelegraph/v0.3.0/user/:tmgId/save/articles                          
+//   /mytelegraph/v0.3.0/user/:tmgId/save/articles/:articleId               
+//   /mytelegraph/v0.3.0/user/:tmgId/save/articles/:articleId               

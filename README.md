@@ -1,8 +1,6 @@
 # User preferences stubs
 Pretty much a wiremock container running on port 10000 with some canned json as responses.
 
-# HOWTO
-
 ## Have the mocks up and running
 ```sh
 rm -rf user-preferences-stubs
@@ -13,6 +11,6 @@ docker-compose up -d
 cd -
 ```
 
-# Endpoints
+## Endpoints
 
 Please, check the preferences [swagger file](https://github.com/telegraph/platforms-swagger-specs/blob/master/user-preferences-swagger.json).

@@ -1,15 +1,15 @@
 {
     "request": {
       "method": "GET",
-      "urlPattern": "/mytelegraph/v0.3.0/user/([0-z]{32})/preferences"
+      "urlPattern": "/mytelegraph/v0.3.0/user/([0-z]{32})/preferences/follow/authors"
     },
     "response": {
       "status": 200,
-      "bodyFileName": "preferences.json",
+      "bodyFileName": "authors.json",
       "transformers": ["body-transformer"],
       "headers": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "*"
       }
     }
-}             
+}

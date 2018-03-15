@@ -13,17 +13,6 @@ docker-compose up -d
 cd -
 ```
 
-## Hit the endpoints
+# Endpoints
 
-Get user preferences
-```sh
-curl localhost:10000/mytelegraph/v0.3.0/user/my2ws23gnjvhkntngr2dcytmgeygindk/preferences
-```
-Get user preferences with 404 response
-```sh
-curl localhost:10000/mytelegraph/v0.3.0/user/notFound/preferences
-```
-Update user preferences
-```sh
-curl localhost:10000/mytelegraph/v0.3.0/user/notFound/preferences
-```
+Please, check [swagger file](https://github.com/telegraph/platforms-swagger-specs/blob/master/user-preferences-swagger.json).

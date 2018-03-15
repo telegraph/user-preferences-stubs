@@ -1,13 +1,13 @@
 {
     "request": {
-      "method": "GET",
-      "urlPattern": "/mytelegraph/v0.3.0/user/notFound/preferences"
+      "method": "PUT",
+      "urlPattern": "/mytelegraph/v0.3.0/user/([0-z]{32})/preferences/follow/topics/([^/]*)"
     },
     "response": {
-      "status": 404,
+      "status": 201,
       "headers": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "*"
       }
     }
-}             
+}

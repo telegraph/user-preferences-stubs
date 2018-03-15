@@ -15,4 +15,4 @@ cd -
 
 # Endpoints
 
-Please, check [swagger file](https://github.com/telegraph/platforms-swagger-specs/blob/master/user-preferences-swagger.json).
+Please, check the preferences [swagger file](https://github.com/telegraph/platforms-swagger-specs/blob/master/user-preferences-swagger.json).

@@ -4,9 +4,7 @@
       "urlPattern": "/mytelegraph/v0.3.0/user/notFound/preferences"
     },
     "response": {
-      "status": 404,
-      "bodyFileName": "preferences.json",
-      "transformers": ["body-transformer"]
+      "status": 404
     }
 }
 //   /mytelegraph/v0.3.0/user/:tmgId/preferences                            

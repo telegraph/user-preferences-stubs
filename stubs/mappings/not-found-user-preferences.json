@@ -1,10 +1,10 @@
 {
     "request": {
       "method": "GET",
-      "urlPattern": "/mytelegraph/v0.3.0/user/([0-z]{32})/preferences"
+      "urlPattern": "/mytelegraph/v0.3.0/user/notFound/preferences"
     },
     "response": {
-      "status": 200,
+      "status": 404,
       "bodyFileName": "preferences.json",
       "transformers": ["body-transformer"]
     }

@@ -1,0 +1,9 @@
+{
+    "request": {
+      "method": "PUT",
+      "urlPattern": "/mytelegraph/v0.3.0/user/([0-z]{32})/preferences"
+    },
+    "response": {
+      "status": 204
+    }
+}

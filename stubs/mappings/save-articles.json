@@ -1,0 +1,13 @@
+{
+    "request": {
+      "method": "PUT",
+      "urlPattern": "/mytelegraph/v0.3.0/user/([0-z]{32})/preferences/save/articles"
+    },
+    "response": {
+      "status": 204,
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*"
+      }
+    }
+}

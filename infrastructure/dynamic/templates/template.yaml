@@ -70,11 +70,11 @@ Parameters:
   HealthEndpoint:
     Description: ALB HealthEndpoint
     Type: String
-    Default: '/health'
+    Default: '/__admin'
   ContainerPort:
     Description: Container listener port
     Type: String
-    Default: '9000'
+    Default: '8080'
   CloudFormationBucket:
     Description: Cloudformation S3 bucket
     Type: String

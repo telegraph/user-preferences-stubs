@@ -261,40 +261,6 @@ Resources:
           TextTransformation: NONE
           PositionalConstraint: EXACTLY
 
-  DBSubnetGroup:
-    Type: AWS::RDS::DBSubnetGroup
-    Properties:
-      DBSubnetGroupDescription: Subnet Group for User Preferences Stubs DB Cluster
-      SubnetIds:
-        - subnet-23d38a7b
-        - subnet-bd1b07d9
-        - subnet-0db1ac7b
-
-  DBCluster:
-    Type: AWS::RDS::DBCluster
-    Properties:
-      DBClusterIdentifier: !Ref ApplicationName
-      DBSubnetGroupName: !Ref DBSubnetGroup
-      Engine: aurora
-      MasterUsername: userpreferencesstubs
-      MasterUserPassword: foobarplaceholder
-
-  DBPrimaryInstance:
-    Type: AWS::RDS::DBInstance
-    Properties:
-      Engine: aurora
-      DBClusterIdentifier: !Ref "DBCluster"
-      DBInstanceClass: db.t2.small
-      DBSubnetGroupName: !Ref "DBSubnetGroup"
-
-  DBReplicaInstance1:
-    Type: AWS::RDS::DBInstance
-    Properties:
-      Engine: aurora
-      DBClusterIdentifier: !Ref "DBCluster"
-      DBInstanceClass: db.t2.small
-      DBSubnetGroupName: !Ref "DBSubnetGroup"
-
 Outputs:
   Application:
     Description: Application

@@ -13,4 +13,5 @@ cd -
 
 ## Endpoints
 
-Please, check the preferences [swagger file](https://github.com/telegraph/platforms-swagger-specs/blob/master/user-preferences-swagger.json).
+[Mock server](https://user-preferences-stubs-preprod.api-platforms-preprod.telegraph.co.uk/__admin/mappings)
+[Swagger file](https://github.com/telegraph/platforms-swagger-specs/blob/master/user-preferences-swagger.json).

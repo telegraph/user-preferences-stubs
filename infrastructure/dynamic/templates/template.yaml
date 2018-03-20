@@ -70,7 +70,7 @@ Parameters:
   HealthEndpoint:
     Description: ALB HealthEndpoint
     Type: String
-    Default: '/__admin'
+    Default: '/__admin/mappings'
   ContainerPort:
     Description: Container listener port
     Type: String

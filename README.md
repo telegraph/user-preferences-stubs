@@ -13,5 +13,6 @@ cd -
 
 ## Endpoints
 
-[Mock server](https://user-preferences-stubs-preprod.api-platforms-preprod.telegraph.co.uk/__admin/mappings)
+[Mock server](https://user-preferences-stubs-preprod.api-platforms-preprod.telegraph.co.uk/__admin/mappings).
+
 [Swagger file](https://github.com/telegraph/platforms-swagger-specs/blob/master/user-preferences-swagger.json).

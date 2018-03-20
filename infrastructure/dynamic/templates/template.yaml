@@ -126,9 +126,9 @@ Resources:
         #  Value: !If [IsProd, platforms-elb-logs, platforms-preprod-elb-logs]
         #- Key: access_logs.s3.prefix
         #  Value: !Ref ApplicationName
-      Scheme: internet-facing
+      Scheme: internal
       SecurityGroups: !Ref ELBSecurityGroups
-      Subnets: !Ref PublicSubnetList
+      Subnets: !Ref PrivateSubnetList
       Tags:
         - Key: Billing
           Value: !Ref BillingTag
@@ -219,47 +219,6 @@ Resources:
           TTL: 60
           ResourceRecords:
             - !GetAtt AppLoadBalancer.DNSName
-
-  WAFAclAssocition:
-    Type: AWS::WAFRegional::WebACLAssociation
-    Properties:
-      ResourceArn: !Ref AppLoadBalancer
-      WebACLId: !Ref WAFAcl
-
-  WAFAcl:
-    Type: AWS::WAFRegional::WebACL
-    Properties:
-      DefaultAction:
-        Type: BLOCK
-      MetricName: !Sub GatewayV2${DeploymentEnv}HeaderCheckingRule
-      Name: !Sub ${ApplicationName} ${DeploymentEnv} Web ACL
-      Rules:
-        - Action:
-            Type: ALLOW
-          Priority: 1
-          RuleId: !Ref HeaderCheckingRule
-
-  HeaderCheckingRule:
-    Type: AWS::WAFRegional::Rule
-    Properties:
-      MetricName: !Sub UserPreferencesStubs${DeploymentEnv}HeaderCheckingRule
-      Name: !Sub ${ApplicationName} ${DeploymentEnv}Header Checking Rule
-      Predicates:
-        - DataId: !Ref BadReferersMatchSet
-          Type: ByteMatch
-          Negated: False
-
-  BadReferersMatchSet:
-    Type: AWS::WAFRegional::ByteMatchSet
-    Properties:
-      Name: !Sub ${ApplicationName} ${DeploymentEnv} ByteMatch for matching authorisation header
-      ByteMatchTuples:
-        - FieldToMatch:
-            Type: HEADER
-            Data: Gateway-Authorisation-Key
-          TargetString: PC&ApX38@w4M
-          TextTransformation: NONE
-          PositionalConstraint: EXACTLY
 
 Outputs:
   Application:

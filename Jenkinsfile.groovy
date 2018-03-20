@@ -40,18 +40,10 @@ ansiColor('xterm') {
             }
 
             stage("Build"){
-                sh """
-                    echo "Build docker container"
-                    ${sbtFolder}/sbt clean assembly
-                """
                 docker.build("${projectName}:${pipeline_version}", "--build-arg APP_NAME=${projectName} --build-arg APP_VERSION=${pipeline_version} .")
             }
 
             stage("Publish"){
-                sh """
-                    echo "Publish docker image"
-                    ${sbtFolder}/sbt publish
-                """
                 docker.withRegistry("${docker_account}", "${docker_registry}") {
                     docker.image("${projectName}:${pipeline_version}").push()
                 }

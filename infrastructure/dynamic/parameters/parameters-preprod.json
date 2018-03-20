@@ -1,0 +1,58 @@
+[
+  {
+    "ParameterKey": "DeploymentEnv",
+    "ParameterValue": "preprod"
+  },
+  {
+    "ParameterKey": "VpcId",
+    "ParameterValue": "vpc-871019e3"
+  },
+  {
+    "ParameterKey": "PrivateSubnetList",
+    "ParameterValue": "subnet-21d38a79,subnet-0cb1ac7a,subnet-be1b07da"
+  },
+  {
+    "ParameterKey": "PublicSubnetList",
+    "ParameterValue": "subnet-23d38a7b,subnet-bd1b07d9,subnet-0db1ac7b"
+  },
+  {
+    "ParameterKey": "ECSDesiredTaskCount",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "ECSScalableTargetMinCapacity",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "ECSScalableTargetMaxCapacity",
+    "ParameterValue": "2"
+  },
+  {
+    "ParameterKey": "DeploymentConfigMinPercent",
+    "ParameterValue": "50"
+  },
+  {
+    "ParameterKey": "TaskMemoryAllocation",
+    "ParameterValue": "20482"
+  },
+  {
+    "ParameterKey": "DeregistrationDelay",
+    "ParameterValue": "30"
+  },
+  {
+    "ParameterKey": "DNSZone",
+    "ParameterValue": "api-platforms-preprod.telegraph.co.uk"
+  },
+  {
+    "ParameterKey": "ECSClusterPhysicalId",
+    "ParameterValue": "cluster-preprod-DockerService-6ZZRDRUD54DB-ECSCluster-MRZRFKJ4VCZG"
+  },
+  {
+    "ParameterKey": "LambdaToElasticsearchArn",
+    "ParameterValue": "arn:aws:lambda:eu-west-1:130692012581:function:LogsToElasticsearch_application-logs-preprod"
+  },
+  {
+    "ParameterKey": "ELBCertArn",
+    "ParameterValue": "arn:aws:acm:eu-west-1:130692012581:certificate/e9ed0a84-dc6b-43f4-b4a2-d976ddc2d370"
+  }
+]

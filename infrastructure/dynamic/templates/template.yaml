@@ -1,0 +1,312 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: User Preferenrces Stubs API
+
+Parameters:
+  ApplicationName:
+    Description: Application Name
+    Type: String
+    Default: user-preferences-stubs
+  DeploymentEnv:
+    Description: Environment
+    Type: String
+  KeyName:
+    Description: Key Name
+    Type: String
+    Default: platforms-zoo
+  VpcId:
+    Description: Vpc Id
+    Type: String
+  PrivateSubnetList:
+    Description: Private Subnet List
+    Type: CommaDelimitedList
+  PublicSubnetList:
+    Description: Public Subnet List
+    Type: CommaDelimitedList
+  ELBSecurityGroups:
+    Description: List of security groups for the load balancer. TMGBase, APIGee, Cluster.
+    Type: List<AWS::EC2::SecurityGroup::Id>
+    Default: "sg-4346b93a,sg-709aea0b,sg-27a5ec5e"
+  ELBCertArn:
+    Description: ARN certificate for Load Balancer based on DNS ${ApplicationName}-${DeploymentEnv}.${DNSZone}
+    Type: String
+  DNSZone:
+    Description: DNS Zone Name
+    Type: String
+  BillingTag:
+    Description: Billing Tag for AWS Resources
+    Type: String
+    Default: proxycache
+  OwnerTag:
+    Description: Owner Tag for AWS Resources
+    Type: String
+    Default: proxycache
+  CloudwatchAlarmSNSTopicArn:
+    Description: SNS Topic Arn that will receive Cloudwatch alarm notifications
+    Type: String
+    Default: ''
+  BuildVersion:
+    Description: Build Version
+    Type: String
+    Default: '1-0-0'
+  NotificationTaskCpuAllocation:
+    Description: Task CPU allocation
+    Type: String
+    Default: '2048'
+  TaskMemoryAllocation:
+    Description: Task memory allocation
+    Type: String
+    Default: '16384'
+  DeregistrationDelay:
+    Description: Deregistration Delay
+    Type: String
+    Default: '30'
+  ECSClusterPhysicalId:
+    Description: ECS Cluster ID
+    Type: String
+  EcrAwsAccountID:
+    Description: ECR Account ID
+    Type: String
+    Default: '385050320367'
+  HealthEndpoint:
+    Description: ALB HealthEndpoint
+    Type: String
+    Default: '/health'
+  ContainerPort:
+    Description: Container listener port
+    Type: String
+    Default: '9000'
+  CloudFormationBucket:
+    Description: Cloudformation S3 bucket
+    Type: String
+    Default: 'artifacts-repo'
+  CloudFormationCommonKey:
+    Description: Cloudformation common path
+    Type: String
+    Default: 'common/latest'
+  CloudFormationKey:
+    Description: Cloudformation path
+    Type: String
+    Default: 'user-preferences-stubs/infrastructure/cloudformation/dynamic'
+  DeploymentConfigMinPercent:
+    Description: Minimum percentage of tasks to stay in operation during a rollout
+    Type: String
+    Default: '50'
+  ECSDesiredTaskCount:
+    Description: ECS Task Desired Count
+    Type: String
+    Default: '2'
+  ECSScalableTargetMinCapacity:
+    Description: Minimum number of containers to schedule
+    Type: String
+    Default: '2'
+  ECSScalableTargetMaxCapacity:
+    Description: Maximum number of containers to schedule
+    Type: String
+    Default: '2'
+  LambdaToElasticsearchArn:
+    Description: Lambda to Elasticsearch Arn
+    Type: String
+  ELBCertArn:
+    Description: ARN certificate for Load Balancer based on DNS ${ApplicationName}-${DeploymentEnv}.${DNSZone}
+    Type: String
+
+#Conditions:
+  #IsProd: !Equals [!Ref DeploymentEnv, prod]
+
+Resources:
+  AppLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      LoadBalancerAttributes:
+        - Key: idle_timeout.timeout_seconds
+          Value: 301
+        #- Key: access_logs.s3.enabled
+        #  Value: !If [IsProd, true, false]
+        #- Key: access_logs.s3.bucket
+        #  Value: !If [IsProd, platforms-elb-logs, platforms-preprod-elb-logs]
+        #- Key: access_logs.s3.prefix
+        #  Value: !Ref ApplicationName
+      Scheme: internet-facing
+      SecurityGroups: !Ref ELBSecurityGroups
+      Subnets: !Ref PublicSubnetList
+      Tags:
+        - Key: Billing
+          Value: !Ref BillingTag
+
+  AppLoadBalancerSslListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref ELBCertArn
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref AppLoadBalancerTargetGroup
+      LoadBalancerArn: !Ref AppLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+
+  AppLoadBalancerTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 60
+      HealthCheckPath: !Ref HealthEndpoint
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 9
+      HealthyThresholdCount: 5
+      Port: !Ref ContainerPort
+      Protocol: HTTP
+      Tags:
+        - Key: BillingTag
+          Value: !Ref BillingTag
+      UnhealthyThresholdCount: 3
+      VpcId: !Ref VpcId
+
+  APIIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+
+
+  ECSService:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: AppLoadBalancerSslListener
+    Properties:
+      TimeoutInMinutes: 30
+      TemplateURL: !Sub
+                     - https://s3-${AWS::Region}.amazonaws.com/${bucket}/${bucketKey}/template-common-ecs-service.json
+                     - bucket: !Ref CloudFormationBucket
+                       bucketKey: !Ref CloudFormationCommonKey
+      Parameters:
+        ApplicationName               : !Ref ApplicationName
+        DeploymentEnv                 : !Ref DeploymentEnv
+        BuildImage                    : !Ref ApplicationName
+        BuildVersion                  : !Ref BuildVersion
+        DeploymentConfigMinPercent    : !Ref DeploymentConfigMinPercent
+        DesiredCount                  : !Ref ECSDesiredTaskCount
+        DeregistrationDelay           : !Ref DeregistrationDelay
+        ECSScalableTargetMinCapacity  : !Ref ECSScalableTargetMinCapacity
+        ECSScalableTargetMaxCapacity  : !Ref ECSScalableTargetMaxCapacity
+        VpcId                         : !Ref VpcId
+        ECSClusterPhysicalId          : !Ref ECSClusterPhysicalId
+        ECSLoadBalancerListener       : !Ref AppLoadBalancerSslListener
+        LoadBalancerListenerPriority  : 100
+        TaskRoleArn                   : !Ref APIIAMRole
+        AccountId                     : !Ref EcrAwsAccountID
+        HealthEndpoint                : !Ref HealthEndpoint
+        ContainerPort                 : !Ref ContainerPort
+        AlbPathPattern                : '*'
+        TaskMemoryAllocation          : !Ref TaskMemoryAllocation
+        TaskCpuAllocation             : !Ref NotificationTaskCpuAllocation
+        #LambdaToElasticsearchArn      : !Ref LambdaToElasticsearchArn
+
+  AppRoute53:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: !Sub ${DNSZone}.
+      Comment: User Preferences Stubs ${DeploymentEnv} DNS
+      RecordSets:
+        - Name: !Sub ${ApplicationName}-${DeploymentEnv}.${DNSZone}
+          Type: CNAME
+          TTL: 60
+          ResourceRecords:
+            - !GetAtt AppLoadBalancer.DNSName
+
+  WAFAclAssocition:
+    Type: AWS::WAFRegional::WebACLAssociation
+    Properties:
+      ResourceArn: !Ref AppLoadBalancer
+      WebACLId: !Ref WAFAcl
+
+  WAFAcl:
+    Type: AWS::WAFRegional::WebACL
+    Properties:
+      DefaultAction:
+        Type: BLOCK
+      MetricName: !Sub GatewayV2${DeploymentEnv}HeaderCheckingRule
+      Name: !Sub ${ApplicationName} ${DeploymentEnv} Web ACL
+      Rules:
+        - Action:
+            Type: ALLOW
+          Priority: 1
+          RuleId: !Ref HeaderCheckingRule
+
+  HeaderCheckingRule:
+    Type: AWS::WAFRegional::Rule
+    Properties:
+      MetricName: !Sub UserPreferencesStubs${DeploymentEnv}HeaderCheckingRule
+      Name: !Sub ${ApplicationName} ${DeploymentEnv}Header Checking Rule
+      Predicates:
+        - DataId: !Ref BadReferersMatchSet
+          Type: ByteMatch
+          Negated: False
+
+  BadReferersMatchSet:
+    Type: AWS::WAFRegional::ByteMatchSet
+    Properties:
+      Name: !Sub ${ApplicationName} ${DeploymentEnv} ByteMatch for matching authorisation header
+      ByteMatchTuples:
+        - FieldToMatch:
+            Type: HEADER
+            Data: Gateway-Authorisation-Key
+          TargetString: PC&ApX38@w4M
+          TextTransformation: NONE
+          PositionalConstraint: EXACTLY
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet Group for User Preferences Stubs DB Cluster
+      SubnetIds:
+        - subnet-23d38a7b
+        - subnet-bd1b07d9
+        - subnet-0db1ac7b
+
+  DBCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      DBClusterIdentifier: !Ref ApplicationName
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      Engine: aurora
+      MasterUsername: userpreferencesstubs
+      MasterUserPassword: foobarplaceholder
+
+  DBPrimaryInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora
+      DBClusterIdentifier: !Ref "DBCluster"
+      DBInstanceClass: db.t2.small
+      DBSubnetGroupName: !Ref "DBSubnetGroup"
+
+  DBReplicaInstance1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora
+      DBClusterIdentifier: !Ref "DBCluster"
+      DBInstanceClass: db.t2.small
+      DBSubnetGroupName: !Ref "DBSubnetGroup"
+
+Outputs:
+  Application:
+    Description: Application
+    Value: !Ref ApplicationName
+  Environment:
+    Description: Environment
+    Value: !Ref DeploymentEnv
+  LoadBalancerURL:
+    Description: Load Balancer URL
+    Value: !Sub https://${ApplicationName}-${DeploymentEnv}.${DNSZone}
+  LoadBalancerArn:
+    Description: ARN of proxycache load balancer. Used by other stacks.
+    Value: !Ref AppLoadBalancer
+    Export:
+      Name: !Sub ${ApplicationName}-AlbARN-${DeploymentEnv}

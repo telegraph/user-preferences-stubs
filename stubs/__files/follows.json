@@ -1,11 +1,11 @@
 {
     "authors" : [
         {
-          "id": "5bf242ee-1882-4b3c-9b54-e4f61ea1931d",
-          "name": "John Doe"
+          "id": "/authors/jacob-rees-mogg/",
+          "name": "Jacob Rees-Mogg"
         },{
-          "id": "55fc4efe-a6cd-4785-82ff-2507249bb97c",
-          "name": "Jane Doe"
+          "id": "/authors/ben-riley-smith/",
+          "name": "Ben Riley-Smith"
         }
     ],
     "topics": [

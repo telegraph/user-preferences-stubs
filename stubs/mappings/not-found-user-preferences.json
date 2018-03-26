@@ -1,7 +1,7 @@
 {
     "request": {
       "method": "GET",
-      "urlPattern": "/mytelegraph/v0.3.0/user/notFound/preferences"
+      "urlPattern": "/mytelegraph/v0.4.0/user/notFound/preferences"
     },
     "response": {
       "status": 404,

@@ -15,6 +15,6 @@ cd -
 
 [Mock server](https://user-preferences-stubs-preprod.api-platforms-preprod.telegraph.co.uk/__admin/mappings).
 
-[Example](https://user-preferences-stubs-preprod.api-platforms-preprod.telegraph.co.uk/mytelegraph/v0.3.0/user/my2ws23gnjvhkntngr2dcytmgeygindk/preferences/save/articles).
+[Example](https://user-preferences-stubs-preprod.api-platforms-preprod.telegraph.co.uk/mytelegraph/v0.4.0/user/my2ws23gnjvhkntngr2dcytmgeygindk/preferences/save/articles).
 
 [Swagger file](https://github.com/telegraph/platforms-swagger-specs/blob/master/user-preferences-swagger.json).

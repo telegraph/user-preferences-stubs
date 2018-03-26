@@ -1,7 +1,7 @@
 {
     "request": {
       "method": "DELETE",
-      "urlPattern": "/mytelegraph/v0.3.0/user/([0-z]{32})/preferences/follow/authors/(([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12}))"
+      "urlPattern": "/mytelegraph/v0.4.0/user/([0-z]{32})/preferences/follow/authors/(([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12}))"
     },
     "response": {
       "status": 200,

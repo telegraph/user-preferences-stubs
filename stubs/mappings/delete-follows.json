@@ -1,0 +1,13 @@
+{
+    "request": {
+      "method": "DELETE",
+      "urlPattern": "/mytelegraph/v0.4.0/user/([0-z]{32})/preferences/follows"
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*"
+      }
+    }
+}

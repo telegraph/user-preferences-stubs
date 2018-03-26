@@ -1,0 +1,15 @@
+{
+    "request": {
+      "method": "GET",
+      "urlPattern": "/mytelegraph/v0.4.0/user/([0-z]{32})/preferences/follows"
+    },
+    "response": {
+      "status": 200,
+      "bodyFileName": "follows.json",
+      "transformers": ["body-transformer"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*"
+      }
+    }
+}

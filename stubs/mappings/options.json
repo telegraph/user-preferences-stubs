@@ -1,0 +1,14 @@
+{
+    "request": {
+      "method": "OPTIONS",
+      "urlPattern": "/mytelegraph/v0.4.0/user/([0-z]{32})/([A-z].*)"
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Headers": "Content-Type"
+      }
+    }
+}

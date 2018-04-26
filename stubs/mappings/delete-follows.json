@@ -1,7 +1,7 @@
 {
     "request": {
       "method": "DELETE",
-      "urlPattern": "/mytelegraph/v0.4.0/user/([0-z]{32})/preferences/follows"
+      "urlPattern": "/mytelegraph/v0.4.0/user/([0-z\\-]{0,32})/preferences/follows"
     },
     "response": {
       "status": 200,

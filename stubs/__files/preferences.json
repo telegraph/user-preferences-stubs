@@ -2,5 +2,7 @@
     "notifications": {
       "inAppEnable": true,
       "pushEnable": true
-    }
+    },
+    "emailDigest" : true,
+    "onboarded": false
 }
